@@ -14,9 +14,9 @@
 ## namespace规则
 
 	首字母大写
-	>App
-	>>App\Controller
-	>Simple
+	App
+	App\Controller
+	Simple
 
 ## 目录结构
 
@@ -47,36 +47,12 @@
 		controller_template.php
 		view.php
 		route.php
-	logs
-	index.php
 
+	logs						日志 未设置其他目录则输出至此
 
-	controller	控制器目录
-		welcome.php	默认controller
-	view		视图目录
-	model		模型目录
+	index.php					入口文件
 
-	class		核心类库目录
-		core.php	核心类
-		arr.php		数组操作类
-		config.php	config文件读取类
-		db.php		mysql操作类
-		redisdb.php	redis封装
-		orm.php		ORM封装
-		cookie.php	cookie操作封装
-		session.php	session操作封装（*需要ORM、cookie支持）
-		controller.php	Controller类
-		view.php	视图类
-		route.php	路由类
-		valid.php	验证参数是否有效
-	config		配置文件目录
-		database.php	数据库配置
-		cookie.php	cookie配置
-		session.php	session配置
-	logs		日志
-	index.php	入口文件
-
-##常用操作
+## 常用操作
 
 	[写日志]
 		//日志文件在logs下，按日期存放
@@ -119,66 +95,28 @@
 		//TODO 未来将支持正则表达式
 		Route::set('list/<controller>/<action>', array('controller' => 'temp', 'action' => 'list'));	表示所有/list/controller_name/action_name下的网址，均由对应的controller和action执行
 
-##相关错误信息
+## nginx配置
 
-	[Wrong Type 1] 文件(model/class/view/config)不存在
-	[Wrong Type 2] 初始化参数(cookie)无定义
-	[Wrong Type 3] URL非法
+	server {
+			listen 80;
+			server_name simple.com;
 
-	[Mysql Error] mysql错误号及错误信息
-	SQL: 错误语句
+			root /data/www/vhost/simple/;
+			index index.php index.html;
+			access_log /data/logs/nginx/simple.log main;
 
-	[HTTP Error 404] controller或action不存在
+			location ~ \.php$ {
+				client_max_body_size 128m;
 
-##其他说明
+				proxy_set_header X-Real-IP $remote_addr;
+				fastcgi_pass   127.0.0.1:9000;
+				fastcgi_index  index.php;
+				fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+				include        fastcgi_params;
+			}
+	}
 
-	代码中以 //* 开始的注释字样，表示等待实现功能。
-	需要尽快实现错误机制
+## 更新记录
 
-##更新记录
-
-	2014年5月11日
-	· 实现最基础的框架结构规划
-	· 实现自动挂载
-	· 实现config文件读取
-	· 实现cookie操作封装
-
-	2014年5月12日
-	· 实现DB操作封装
-	· 实现简单的ORM封装
-
-	2014年5月13日
-	· 实现基于数据库的session操作
-	· 修改del相关函数的调用方式为delete
-
-	2014年5月15日
-	· 实现基础的MVC功能
-	· 实现默认路由
-	· 还原为统一入口
-	· 修改自动加载机制，用以自动挂载model
-
-	2014年5月16日
-	· 修改自动挂载实现方式
-	· 修复session、orm等语法bug
-	· DB类增加过滤函数，ORM中过滤函数改为调用DB的过滤函数实现
-
-	2014年5月18日
-	· 删除action必带参数$param
-	· Controller增加$this->_post与$this->_get方法，过滤get和post参数
-	* 考虑增加参数自动过滤，每个表单一个固定的md5 key，填写好每个参数的验证方式，在Controller入口处进行统一过滤及返还错误信息
-
-	2014年5月19日
-	· 增加Valid类，判断参数有效
-
-	2014年5月21日
-	· 修复输出错误的bug
-
-	2014年5月23日
-	· 允许自定义Route
-	· 修改Route的挂载方式
-	· 增加config文件route.php，用以自定义route规则
-	· 修改站点的入口Route::run为Route::init 执行Route初始化读入
-	* 暂不支持复杂的正则格式route规则
-
-	2016年5月15日
+	2016年6月27日
 	· Bug fixed
