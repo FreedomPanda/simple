@@ -5,18 +5,51 @@
 
 	author		gavinczhang
 	email		gavin6487@gmail.com
-	version		0.3
-	changed		2016年5月15日 01:33:46
+	version		0.4
+	changed		2016年5月27日 16:03:46
 	Explanation
-			* 允许自定义Route
-			* 修改Route的挂载方式
-			* 增加config文件route.php	
-			* 修改站点的入口为Route::init
-			* 暂不支持正则route规则
-			* 增加日志操作
-			* 增加redis封装
+			* 重新定义目录结构
+			* 使用namespace
 
-##目录结构
+## namespace规则
+
+	首字母大写
+	>App
+	>>App\Controller
+	>Simple
+
+## 目录结构
+
+	app							项目目录
+		controller					controller
+		classes						项目特殊定义的class文件是目录
+		model						模型文件 一个表对应一个model
+		view						模板文件
+		config						配置文件
+
+	classes						全局class文件
+
+	tools						工具目录
+		curl.php					curl封装
+		curl_options.php			curl所需的option封装
+		email.php					发送邮件
+		orm.php						ORM操作
+		rdb.php						redis封装
+
+	simple						框架
+		core.php					框架核心文件
+		arr.php
+		config.php
+		db.php
+		cookie.php
+		session.php
+		controller.php
+		controller_template.php
+		view.php
+		route.php
+	logs
+	index.php
+
 
 	controller	控制器目录
 		welcome.php	默认controller
