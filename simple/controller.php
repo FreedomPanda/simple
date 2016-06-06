@@ -1,5 +1,7 @@
 <?php
 
+namespace Simple;
+
 class Controller
 {
 	public function before()

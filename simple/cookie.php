@@ -1,5 +1,7 @@
 <?php
 
+namespace Simple;
+
 class Cookie
 {
 	//标记是否已经初始化
@@ -110,7 +112,7 @@ class Cookie
 		// Require a valid salt
 		if ( ! Cookie::$salt)
 		{
-			Core::quit("[Wrong Type 2]: Cookie Salt Not Defined!");
+			throw new Error('Cookie Salt Not Defined!');
 		}
 
 		// Determine the user agent

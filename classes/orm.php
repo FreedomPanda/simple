@@ -1,5 +1,10 @@
 <?php
 
+namespace Classes;
+
+use Simple\DB;
+use Simple\Arr;
+
 class ORM
 {
 	//处table外，其他均在关键词前加空格

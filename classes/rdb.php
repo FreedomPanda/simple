@@ -1,36 +1,41 @@
 <?php
 
+namespace Classes;
+
+use Simple\Config;
+use Simple\Error;
+
 /**
  * Redis封装类，使用前请用try catch包裹
  */
-class Redisdb
+class RDB
 {
 	public static $_instance = null;
 	private $_link = null;
 
 	/**
-	 * @return Redisdb
+	 * @return RDB
 	 * */
 	public static function instance()
 	{
-		if (!(Redisdb::$_instance instanceof Redisdb))
+		if (!(RDB::$_instance instanceof RDB))
 		{
-			Redisdb::$_instance = new Redisdb();
+			RDB::$_instance = new RDB();
 		}
-		return Redisdb::$_instance;
+		return RDB::$_instance;
 	}
 
 	//连接redis
 	private function __construct()
 	{
 		$config = Config::get('redis');
-		$this->_link = new Redis();
+		$this->_link = new \Redis();
 
 		$result = $this->_link->connect($config['ip'], $config['port']);
 		if (!$result)
 		{
 			//todo 告警当前$ip的redis出现故障
-			Core::quit("[Wrong Type 1]: redis connection error");
+			throw new Error('redis connection error', 'Redis Error');
 		}
 
 		if (isset($config['password']))

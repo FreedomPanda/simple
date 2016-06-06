@@ -1,5 +1,7 @@
 <?php
 
+namespace Classes;
+
 class Curl
 {
 	public static function execute($options, $multi = true)

@@ -1,11 +1,13 @@
 <?php
 
+namespace Simple;
+
 class DB
 {
 	private static $_instance = null;
 
 	/**
-	 * @var mysqli
+	 * @var \mysqli
 	 */
 	private $_link = null;
 
@@ -37,7 +39,7 @@ class DB
 	//连接
 	public function connect($hostname, $username, $password, $database = '')
 	{
-		$this->_link = new mysqli($hostname, $username, $password);
+		$this->_link = new \mysqli($hostname, $username, $password);
 		if ($this->_link->connect_errno)
 		{
 			$this->halt();
@@ -54,16 +56,15 @@ class DB
 	public function query($sql)
 	{
 		$result = $this->_link->query($sql);
-		if ($result)
+		if (!$result)
 		{
-			return $result;
+			$this->halt($sql);
 		}
-		$this->halt($sql);
+		return $result;
 	}
 
-	//mysql_fetch_array函数
 	/**
-	 * @param $result mysqli_result
+	 * @param $result \mysqli_result
 	 * @return mixed
 	 */
 	public function fetch($result)
@@ -103,7 +104,7 @@ class DB
 		{
 			$str .= "\nSQL: ".$sql;
 		}
-		Core::quit($str);
+		throw new Error($str, 'DB Error');
 	}
 
 	//过滤参数

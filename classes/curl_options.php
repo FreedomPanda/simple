@@ -1,5 +1,7 @@
 <?php
 
+namespace Classes;
+
 class Curl_Options
 {
 	public static $_options = array(

@@ -1,5 +1,11 @@
 <?php
 
+namespace Classes;
+
+use Simple\Cookie;
+use Simple\Arr;
+use Simple\Config;
+
 /**
  * 数据库模拟session
  *

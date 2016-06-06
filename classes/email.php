@@ -1,5 +1,7 @@
 <?php
 
+namespace Classes;
+
 /**
  * 邮件发送类
  * 支持发送纯文本邮件和HTML格式的邮件，可以多收件人，多抄送，多秘密抄送，带附件(单个或多个附件),支持到服务器的ssl连接
@@ -413,8 +415,9 @@ class Email {
 				$this->_errorMessage = "Error:" . socket_strerror(socket_last_error());
 				return false;
 			}
-		}catch(Exception $e) {
+		}catch(\Exception $e) {
 			$this->_errorMessage = "Error:" . $e->getMessage();
+			return false;
 		}
 	}
 
@@ -455,8 +458,9 @@ class Email {
 				$this->_errorMessage = "Error: " . $command . " send failed";
 				return false;
 			}
-		}catch(Exception $e) {
+		}catch(\Exception $e) {
 			$this->_errorMessage = "Error:" . $e->getMessage();
+			return false;
 		}
 	}
 

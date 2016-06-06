@@ -1,5 +1,7 @@
 <?php
 
+namespace Simple;
+
 class Arr
 {
 	public static function get($array, $key, $default = null)

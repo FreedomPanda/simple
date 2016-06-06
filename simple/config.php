@@ -1,5 +1,7 @@
 <?php
 
+namespace Simple;
+
 class Config
 {
 	public static $_config = array();
@@ -42,14 +44,14 @@ class Config
 	//载入config
 	public static function load($filename)
 	{
-		$path = Core::find_file('config', $filename);
+		$path = Simple::find_file('configs', $filename);
 		if (!$path)
 		{
-			Core::quit("[Wrong Type 1]: Config File Not Found! " . $filename);
+			throw new Error('Config File['.$filename.'] Not Found!');
 		}
 		else
 		{
-			Config::$_config[$filename] = Core::load($path);
+			Config::$_config[$filename] = Simple::load($path);
 		}
 	}
 }
