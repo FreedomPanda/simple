@@ -87,9 +87,6 @@ class Simple
 	{
 		try
 		{
-			//挂载自动加载
-			spl_autoload_register(array('Simple', 'autoload'));
-
 			$this->get_client_ip();
 
 			Route::router();

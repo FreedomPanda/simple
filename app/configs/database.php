@@ -5,6 +5,6 @@ return array(
 	'username'	=> 'root',
 	'database'	=> 'simple',
 	'password'	=> '',
-	'pconnect'	=> true,
-	'charset'	=> 'utf8',
+	'pconnect'	=> FALSE,
+	'charset'	=> 'utf8mb4',
 );

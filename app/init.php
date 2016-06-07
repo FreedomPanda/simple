@@ -17,15 +17,4 @@
 	'param'			=> ':1',
 ]);
 
-\Simple\Route::add('(\w+)/(\w+)/(\d+)', [
-	'controller'	=> ':1',
-	'action'		=> ':2',
-	'param'			=> ':3',
-]);
-
-\Simple\Route::add('login', [
-	'controller'	=> 'user',
-	'action'		=> 'login',
-]);
-
-\Simple\Route::add('/baidu', 'http://www.baidu.com/');
+\Simple\Route::add('baidu', 'http://www.baidu.com/');

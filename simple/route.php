@@ -58,22 +58,38 @@ class Route
 
 		foreach (self::$_routes as $route)
 		{
-			if (preg_match('@'.$route['rule'].'@', $url_path, $matches))
+			if (empty($route['rule']))
+			{
+				if (empty($url_path))
+				{
+					//空字符串
+					if (is_array($route['route']))
+					{
+						Route::run(Arr::get($route['route'], 'controller', Route::$_default_controller), Arr::get($route['route'], 'action', Route::$_default_action));
+					}
+					else
+					{
+						//URL直接跳转
+						HTTP::instance()->redirect($route['route']);
+					}
+				}
+			}
+			elseif (preg_match('@'.$route['rule'].'@', $url_path, $matches))
 			{
 				//正则匹配成功
 				if (is_array($route['route']))
 				{
 					Route::$_matches = $matches;
 					//替换route设置时的:1为正则匹配到的参数
-					$controller = preg_replace_callback('@\:(d+)@', function($match) {
+					$controller = preg_replace_callback('@:(\d+)@', function($match) {
 						return Route::$_matches[$match[1]];
 					}, $route['route']['controller']);
-					$action = preg_replace_callback('@\:(d+)@', function($match) {
+					$action = preg_replace_callback('@:(\d+)@', function($match) {
 						return Route::$_matches[$match[1]];
 					}, $route['route']['action']);
 					if (isset($route['route']['param']))
 					{
-						$param = preg_replace_callback('@\:(d+)@', function($match) {
+						$param = preg_replace_callback('@:(\d+)@', function($match) {
 							return Route::$_matches[$match[1]];
 						}, $route['route']['param']);
 					}
@@ -89,25 +105,23 @@ class Route
 					HTTP::instance()->redirect($route['route']);
 				}
 			}
+		}
+
+		//未匹配到,走默认情况
+		$uri_array = [];
+		if (!empty($url_path))
+		{
+			if (strpos($url_path, '/') !== false)
+			{
+				$uri_array = explode('/', $url_path);
+			}
 			else
 			{
-				//未匹配到,走默认情况
-				$uri_array = [];
-				if (!empty($url_path))
-				{
-					if (strpos($url_path, '/') !== false)
-					{
-						$uri_array = explode('/', $url_path);
-					}
-					else
-					{
-						$uri_array = [$url_path];
-					}
-				}
-
-				Route::run(Arr::get($uri_array, 0, Route::$_default_controller), Arr::get($uri_array, 1, Route::$_default_action), Arr::get($uri_array, 2));
+				$uri_array = [$url_path];
 			}
 		}
+
+		Route::run(Arr::get($uri_array, 0, Route::$_default_controller), Arr::get($uri_array, 1, Route::$_default_action), Arr::get($uri_array, 2));
 	}
 
 	//执行
@@ -120,7 +134,7 @@ class Route
 		//查找对应的class 可做404
 		if (Simple::find_file('controllers', Route::$controller))
 		{
-			$controller_name = '\\App\\Controllers\\Controller_'.ucfirst(Route::$controller);
+			$controller_name = '\\App\\Controllers\\'.ucfirst(Route::$controller);
 			//存在此controller文件
 			if (method_exists($controller_name, Route::$action))
 			{
@@ -144,7 +158,7 @@ class Route
 
 		if (DEBUG)
 		{
-			throw new Error(Route::$controller.' '.Route::$action. ' is not found');
+			throw new Error('\\App\\Controllers\\'.Route::$controller.'->'.Route::$action. ' is not found');
 		}
 
 		Route::error_404();
@@ -164,7 +178,7 @@ class Route
 			//查找对应的class 可做404
 			if (Simple::find_file('controllers', Route::$controller))
 			{
-				$controller_name = '\\App\\Controllers\\Controller_'.ucfirst(Route::$controller);
+				$controller_name = '\\App\\Controllers\\'.ucfirst(Route::$controller);
 				//存在此controller文件
 				if (method_exists($controller_name, Route::$action))
 				{

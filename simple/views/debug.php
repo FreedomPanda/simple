@@ -26,24 +26,39 @@
 			color:				#990000;
 			margin: 			0 0 4px 0;
 		}
+
+		table {
+			text-align: left;
+			margin-bottom: 40px;
+		}
+		tr {
+			height: 20px;
+		}
 	</style>
 </head>
 <body>
 <div id="content">
 	<h1><?php echo $message; ?></h1>
 	<p><?php echo $content; ?></p>
-	<pre>
-		<?php $trace = debug_backtrace(); ?>
-		<?php echo str_repeat('-', 100); ?>
-		<?php echo str_repeat('-', 100); ?>
-		<?php foreach ($trace as $key=>$value) :?>
-			<?php $value['line'] = !isset($value['line']) || empty($value['line']) ? 0 : $value['line'];?>
-			<?php $value['class'] = !isset($value['class']) || empty($value['class']) ? '' : $value['class'];?>
-			<?php $value['type'] = !isset($value['type']) || empty($value['type']) ? '' : $value['type'];?>
-			<?php $value['file'] = !isset($value['file']) || empty($value['file']) ? 'not_found' : $value['file'];?>
-			<?php echo "#$key\t line:{$value['line']}\t call:{$value['class']}{$value['type']}{$value['function']}\t file:{$value['file']}\n"; ?>
-		<?php endforeach; ?>
-	</pre>
+	<?php $trace = debug_backtrace(); ?>
+	<table frame="hsides">
+		<thead>
+			<tr>
+				<th width="50">No</th>
+				<th width="600">文件</th>
+				<th width="400">类名-方法</th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php foreach ($trace as $key=>$value) :?>
+				<tr>
+					<td><?php echo $key; ?></td>
+					<td><?php echo 'file:'.\Simple\Arr::get($value, 'file', 'not_found'); ?>[<?php echo \Simple\Arr::get($value, 'line', 0); ?>]</td>
+					<td><?php echo 'call:'.\Simple\Arr::get($value, 'class', '').\Simple\Arr::get($value, 'type', '').\Simple\Arr::get($value, 'function', ''); ?></td>
+				</tr>
+			<?php endforeach; ?>
+		</tbody>
+	</table>
 </div>
 </body>
 </html>

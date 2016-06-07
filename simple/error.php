@@ -4,13 +4,13 @@ namespace Simple;
 
 class Error extends \Exception
 {
-	public $message = NULL;
+	public $title = NULL;
 	public $content = NULL;
 
 
-	public function __construct($content, $message = 'Simple Error')
+	public function __construct($content, $title = 'Simple Error')
 	{
-		$this->message = $message;
+		$this->title = $title;
 		$this->content = $content;
 		parent::__construct($content);
 	}
@@ -21,7 +21,7 @@ class Error extends \Exception
 		if (DEBUG)
 		{
 			$data = [
-				'message'	=> $this->message,
+				'message'	=> $this->title,
 				'content'	=> $this->content,
 			];
 			$file_path = ROOT.'simple/views/debug.php';
