@@ -1,9 +1,6 @@
 <?php
 
-namespace Classes;
-
-use Simple\DB;
-use Simple\Arr;
+namespace Simple;
 
 class ORM
 {

@@ -44,7 +44,12 @@ class Config
 	//载入config
 	public static function load($filename)
 	{
-		$path = Simple::find_file('configs', $filename);
+		$path = NULL;
+		if (DEBUG)
+		{
+			$path = Simple::find_file('configs/debug', $filename);
+		}
+		$path = !$path ? Simple::find_file('configs', $filename) : $path;
 		if (!$path)
 		{
 			throw new Error('Config File['.$filename.'] Not Found!');

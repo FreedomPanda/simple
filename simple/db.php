@@ -26,13 +26,9 @@ class DB
 	//读入config 开启mysql连接
 	private function __construct()
 	{
-		$hostname = Config::get('database.hostname');
-		$username = Config::get('database.username');
-		$password = Config::get('database.password');
-		$database = Config::get('database.database');
-		$charset = Config::get('database.charset');
-		$this->connect($hostname, $username, $password, $database);
-		$this->query("SET NAMES '{$charset}'");
+		$config = Config::get('database');
+		$this->connect(Arr::get($config, 'hostname', '127.0.0.1'), Arr::get($config, 'username', 'root'), Arr::get($config, 'password'), Arr::get($config, 'database'));
+		$this->query("SET NAMES '".Arr::get($config, 'charset', 'utf8')."'");
 		return $this;
 	}
 

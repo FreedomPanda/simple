@@ -49,6 +49,7 @@ class HTTP
 		return self::$_instance;
 	}
 
+	//设置header
 	public function header($array, $value = NULL)
 	{
 		if (is_array($array))
@@ -68,16 +69,19 @@ class HTTP
 		}
 	}
 
+	//设置状态
 	public function status($code)
 	{
 		$this->header('HTTP/1.1 '.self::$HTTP_HEADERS[$code]);
 	}
 
+	//输出正文并结束
 	public function response($content)
 	{
 		exit($content);
 	}
 
+	//跳转
 	public function redirect($url, $mode = 301)
 	{
 		$this->status($mode);
@@ -85,6 +89,17 @@ class HTTP
 		$this->finish();
 	}
 
+	//ajax输出
+	public function ajax($data)
+	{
+		$this->header('Cache-Control', 'no-cache, must-revalidate');
+		$this->header('Last-Modified', gmdate('D, d M Y H:i:s') . ' GMT');
+		$this->header('Content-Type', 'application/json');
+		$return = json_encode($data);
+		$this->finish($return);
+	}
+
+	//输出正文并结束
 	public function finish($content = null)
 	{
 		$this->response($content);

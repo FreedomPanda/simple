@@ -8,21 +8,21 @@ use Simple\Error;
 /**
  * Redis封装类，使用前请用try catch包裹
  */
-class RDB
+class Redis
 {
 	public static $_instance = null;
 	private $_link = null;
 
 	/**
-	 * @return RDB
+	 * @return \Classes\Redis
 	 * */
 	public static function instance()
 	{
-		if (!(RDB::$_instance instanceof RDB))
+		if (!(Redis::$_instance instanceof Redis))
 		{
-			RDB::$_instance = new RDB();
+			Redis::$_instance = new Redis();
 		}
-		return RDB::$_instance;
+		return Redis::$_instance;
 	}
 
 	//连接redis
@@ -34,8 +34,7 @@ class RDB
 		$result = $this->_link->connect($config['ip'], $config['port']);
 		if (!$result)
 		{
-			//todo 告警当前$ip的redis出现故障
-			throw new Error('redis connection error', 'Redis Error');
+			throw new Error('redis['.$config['ip'].':'.$config['port'].'] connection error', 'Redis Error');
 		}
 
 		if (isset($config['password']))

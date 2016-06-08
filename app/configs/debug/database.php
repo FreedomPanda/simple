@@ -3,7 +3,7 @@
 return [
 	'hostname'	=> 'localhost',
 	'username'	=> 'root',
-	'database'	=> 'simple',
+	'database'	=> 'simple_test',
 	'password'	=> '',
 	'pconnect'	=> FALSE,
 	'charset'	=> 'utf8mb4',
