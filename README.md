@@ -16,7 +16,7 @@
 			* 新增model基类
 
 ## 感谢
-	感谢kohana框架,参考借鉴了许多代码及思路
+	感谢kohana/swoole/thinkphp框架,参考借鉴了许多代码及思路
 	感谢email类库的不知名作者
 
 ## namespace规则
@@ -35,6 +35,11 @@
 		views						模板文件
 		configs						配置文件目录
 			debug						debug模式下配置文件目录
+				database.php				debug模式下数据库配置文件
+			database.php				正式环境数据库配置文件
+			cookie.php					cookie配置文件
+			redis.php					redis配置文件
+			session.php					session配置文件
 		logs						日志 未设置其他目录则输出至此
 		init.php					项目Route自定义
 
