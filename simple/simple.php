@@ -12,31 +12,34 @@ class Simple
 	public static function autoload($class)
 	{
 		$class_node_list = explode('\\', trim($class, '\\'));
+		//真实类名
 		$real_class_name = array_pop($class_node_list);
-		$real_class_name = strtolower($real_class_name);
-		$class_namespace = implode('\\', $class_node_list);
+		//获取顶级命名空间自定义地址
+		$class_namespace = array_shift($class_node_list);
+
 		if (isset(self::$namespaces[$class_namespace]))
 		{
-			include self::$namespaces[$class_namespace] . '/' . $real_class_name . '.php';
+			$file_path = self::$namespaces[$class_namespace] . implode('/', $class_node_list).'/'.$real_class_name.'.php';
 		}
 		else
 		{
-			$file_path = implode('/', $class_node_list).'/'.$real_class_name.'.php';
-			$file_path = strtolower($file_path);
-			if (is_file(ROOT . $file_path))
-			{
-				include ROOT . $file_path;
-			}
-			else
-			{
-				throw new Error('Class['.$class.'] Not Found');
-			}
+			$file_path = ROOT . $class_namespace .'/' . implode('/', $class_node_list).'/'.$real_class_name.'.php';
+		}
+
+		$file_path = strtolower($file_path);
+		if (is_file($file_path))
+		{
+			include $file_path;
+		}
+		else
+		{
+			throw new Error('Class['.$class.'] Not Found');
 		}
 	}
 
 	/**
 	 * 设置命名空间
-	 * @param $namespace string 命名空间
+	 * @param $namespace string 顶级命名空间
 	 * @param $path string 路径
 	 */
 	public static function add_namespace($namespace, $path)
