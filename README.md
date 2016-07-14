@@ -5,7 +5,6 @@
 
 	author		gavinczhang
 	email		gavin6487@gmail.com
-	copyright	GPL
 	version		0.4
 	changed		2016年06月08日 20:18:46
 	Explanation
