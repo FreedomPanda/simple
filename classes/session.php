@@ -27,7 +27,7 @@ abstract class Session
 		if (!(Session::$_instance instanceof Session))
 		{
 			$config = Config::get('session');
-			$mode = Arr::get($config, ' mode');
+			$mode = Arr::get($config, 'mode');
 			if ($mode == 'mysql')
 			{
 				Session::$_instance = new Mysql();
